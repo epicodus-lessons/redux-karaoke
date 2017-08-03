@@ -3,7 +3,7 @@ let chorus = "Don't want to be a fool for you, Just another player in your game 
 let chorusArray = chorus.split(', ');
 let position = 0;
 
-let state = {
+let initialState = {
   chorusString: chorus,
   chorusArray: chorusArray,
   arrayPosition: position,
@@ -39,13 +39,16 @@ function phraseChanger(state, action) {
   }
 }
 
+const { createStore } = Redux;
+const store = createStore(phraseChanger);
+console.log(store);
 
 function displayPhrase(state) {
   document.getElementById('words').innerHTML = state.currentPhrase;
 }
 
 window.onload = function() {
-  displayPhrase(state);
+  displayPhrase(initialState);
 }
 
 function switchButtonClicked() {
