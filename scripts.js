@@ -10,7 +10,7 @@ let initialState = {
   currentPhrase: chorusArray[position]
 }
 
-function phraseChanger(state, action) {
+function phraseChanger(state = initialState, action) {
   switch (action.type) {
     case 'SWITCH':
       if (state.arrayPosition < state.chorusArray.length - 1) {
@@ -41,7 +41,7 @@ function phraseChanger(state, action) {
 
 const { createStore } = Redux;
 const store = createStore(phraseChanger);
-console.log(store);
+console.log(store.getState());
 
 function displayPhrase(state) {
   document.getElementById('words').innerHTML = state.currentPhrase;
