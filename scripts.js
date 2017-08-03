@@ -40,15 +40,15 @@ function phraseChanger(state, action) {
 }
 
 
-function displayNewPhrase(state) {
+function displayPhrase(state) {
   document.getElementById('words').innerHTML = state.currentPhrase;
 }
 
-setTimeout(function () {
-  document.getElementById('words').innerHTML = chorusArray[position];
-}, 200);
+window.onload = function() {
+  displayPhrase(state);
+}
 
 function switchButtonClicked() {
   state = phraseChanger(state, { type:'SWITCH' });
-  displayNewPhrase(state);
+  displayPhrase(state);
 }
