@@ -42,6 +42,8 @@ function phraseChanger(state = initialState, action) {
 const { createStore } = Redux;
 const store = createStore(phraseChanger);
 console.log(store.getState());
+store.dispatch({ type: 'SWITCH' })
+console.log(store.getState());
 
 function displayPhrase(state) {
   document.getElementById('words').innerHTML = state.currentPhrase;
@@ -50,6 +52,7 @@ function displayPhrase(state) {
 window.onload = function() {
   displayPhrase(initialState);
 }
+
 
 function switchButtonClicked() {
   state = phraseChanger(state, { type:'SWITCH' });
