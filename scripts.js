@@ -10,7 +10,7 @@ let initialState = {
   currentPhrase: chorusArray[position]
 }
 
-function phraseChanger(state = initialState, action) {
+const phraseChanger = (state = initialState, action) => {
   switch (action.type) {
     case 'SWITCH':
       if (state.arrayPosition < state.chorusArray.length - 1) {
@@ -42,17 +42,17 @@ function phraseChanger(state = initialState, action) {
 const { createStore } = Redux;
 const store = createStore(phraseChanger);
 console.log(store.getState());
-store.dispatch({ type: 'SWITCH' })
-console.log(store.getState());
-store.subscribe(() => {
-  document.getElementById('words').innerHTML = store.getState().currentPhrase;
-});
 
-window.onload = function() {
+const render = () => {
   document.getElementById('words').innerHTML = store.getState().currentPhrase;
 }
 
+store.subscribe(render);
 
-function switchButtonClicked() {
+window.onload = function() {
+  render();
+}
+
+const switchButtonClicked = () => {
   store.dispatch({ type: 'SWITCH' })
 }
