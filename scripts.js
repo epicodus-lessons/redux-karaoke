@@ -10,24 +10,21 @@ let initialState = {
   currentPhrase: chorusArray[position]
 }
 
-const phraseChanger = (state = initialState, action) => {
+// REDUCER //
+const reducer = (state = initialState, action) => {
+  let newState;
   switch (action.type) {
-    case 'SWITCH':
-      if (state.arrayPosition < state.chorusArray.length - 1) {
-        let newPosition = state.arrayPosition + 1;
-        let newPhrase = state.chorusArray[newPosition];
-        const newState = {
-          chorusString: state.chorusString,
-          chorusArray: state.chorusArray,
-          arrayPosition: newPosition,
-          currentPhrase: newPhrase
-        }
-        return newState;
-      } else {
-        action.type = 'RESTART';
+    case 'NEXT_LYRIC':
+      let newPosition = state.arrayPosition + 1;
+      newState = {
+        chorusString: state.chorusString,
+        chorusArray: state.chorusArray,
+        arrayPosition: newPosition,
+        currentPhrase: state.chorusArray[newPosition]
       }
-    case 'RESTART':
-      const newState = {
+      return newState;
+    case 'RESTART_SONG':
+      newState = {
         chorusString: state.chorusString,
         chorusArray: state.chorusArray,
         arrayPosition: 0,
@@ -39,20 +36,49 @@ const phraseChanger = (state = initialState, action) => {
   }
 }
 
+
+const { expect } = window;
+
+// UNIT TESTS //
+expect(
+  reducer(initialState, { type: null })
+).toEqual(initialState);
+
+expect(
+  reducer(initialState, { type: 'NEXT_LYRIC' })
+).toEqual({
+  chorusString: chorus,
+  chorusArray: chorusArray,
+  arrayPosition: 1,
+  currentPhrase: chorusArray[1]
+});
+
+expect(
+  reducer({
+    chorusString: chorus,
+    chorusArray: chorusArray,
+    arrayPosition: 1,
+    currentPhrase: chorusArray[1]
+  }, { type: 'RESTART_SONG' })
+).toEqual(initialState);
+
 const { createStore } = Redux;
-const store = createStore(phraseChanger);
+const store = createStore(reducer);
 console.log(store.getState());
 
 const render = () => {
   document.getElementById('words').innerHTML = store.getState().currentPhrase;
 }
 
-store.subscribe(render);
 
 window.onload = function() {
   render();
 }
 
 const switchButtonClicked = () => {
-  store.dispatch({ type: 'SWITCH' })
+  console.log('click');
+  store.dispatch({ type: 'NEXT_LYRIC'} );
+  console.log(store.getState());
 }
+
+store.subscribe(render);
